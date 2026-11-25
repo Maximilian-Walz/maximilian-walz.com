@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro'
+import { formatDate, site } from '../lib/posts'
+const updated = new Date('2026-11-25')
+---
+
+<Base title="Legal">
+  <div class="prose prose-invert mx-auto pt-6">
+    <h1>Privacy Policy</h1>
+    <p class="text-gray-400">Last updated on <time datetime={updated.toISOString()}>{formatDate(updated)}</time></p>
+    <p>This is a personal, non-commercial website. It is built to collect as little data about you as possible.</p>
+
+    <h2>1. No tracking, no cookies</h2>
+    <p>
+      This website does not use analytics, does not set cookies, and does not load fonts, scripts or images from
+      third-party servers.
+    </p>
+
+    <h2>2. Server logs</h2>
+    <p>
+      The website is hosted by netcup GmbH in Germany. As with any website, the hosting server automatically records
+      technical access data such as your IP address, the time of the request, the page requested and your browser
+      type. This data is used only to keep the site running securely and is not combined with other data.
+    </p>
+
+    <h2>3. Contacting me</h2>
+    <p>
+      If you send me an email, I use your address and the content of your message only to answer you.
+    </p>
+
+    <h2>4. Links to other sites</h2>
+    <p>
+      This website links to other sites. I am not responsible for their content or privacy practices.
+    </p>
+
+    <h2>5. Your rights</h2>
+    <p>
+      You can ask what personal data I hold about you and have it corrected or deleted by writing to
+      <a href={`mailto:${site.email}`}>{site.email}</a>.
+    </p>
+
+    <h2>6. Changes</h2>
+    <p>If this policy changes, the new version is published here with a new date.</p>
+  </div>
+</Base>

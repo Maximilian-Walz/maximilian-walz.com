@@ -1,0 +1,15 @@
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+# Old URLs from the previous site
+RewriteRule ^blog/?$ /projects/ [R=301,L]
+RewriteRule ^blog/page/.*$ /projects/ [R=301,L]
+RewriteRule ^blog/([^/]+)/?$ /projects/$1/ [R=301,L]
+RewriteRule ^tags/?$ /projects/ [R=301,L]
+
+# Fingerprinted assets never change
+<IfModule mod_headers.c>
+  <FilesMatch "^_astro/|\.(woff2|webp|avif)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>

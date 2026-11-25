@@ -1,0 +1,23 @@
+---
+import { getPosts, getTags } from '../lib/posts'
+const tags = getTags(await getPosts())
+---
+
+<section class="px-2 py-10 text-center md:py-16">
+  <h1 class="text-4xl font-extrabold sm:text-6xl">
+    Hi, <a href="/about/" class="text-primary-500 hover:text-primary-400">I'm Max!</a>
+  </h1>
+  <p class="mx-auto mt-4 max-w-2xl text-lg leading-8 text-gray-200 sm:text-2xl sm:leading-9">
+    This is where I show the things I make in my free time.
+  </p>
+  <p class="mx-auto mt-5 flex max-w-2xl flex-wrap justify-center gap-x-2 gap-y-1 text-gray-400">
+    {
+      tags.map((t, i) => (
+        <span>
+          <a href={`/tags/${t.slug}/`} class="hover:text-primary-400">{t.name}</a>
+          {i < tags.length - 1 && <span aria-hidden="true" class="ml-2 text-gray-700">/</span>}
+        </span>
+      ))
+    }
+  </p>
+</section>

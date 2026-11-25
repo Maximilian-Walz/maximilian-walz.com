@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import Card from '../components/Card.astro'
+import Intro from '../components/Intro.astro'
+import SectionTitle from '../components/SectionTitle.astro'
+import { getPosts, getTags } from '../lib/posts'
+
+const posts = await getPosts()
+const latest = posts.slice(0, 3)
+const latestIds = new Set(latest.map((p) => p.id))
+// Favorites that are not already shown under Latest, so older work stays visible.
+const favorites = posts.filter((p) => p.data.favorite && !latestIds.has(p.id))
+const tags = getTags(posts)
+---
+
+<Base wide>
+  <Intro />
+
+  <SectionTitle title="Latest" href="/projects/" linkText="All projects" />
+  <div class="grid gap-6 md:h-[30rem] md:grid-cols-3 md:grid-rows-2">
+    <div class="h-80 md:col-span-2 md:row-span-2 md:h-auto">
+      <Card post={latest[0]} overlay eager sizes="(min-width: 48rem) 45rem, 100vw" />
+    </div>
+    {latest.slice(1).map((p) => <div class="h-64 md:h-auto"><Card post={p} overlay sizes="(min-width: 48rem) 23rem, 100vw" /></div>)}
+  </div>
+
+  <SectionTitle title="My Favorites" />
+  <div class="snap-row">
+    {favorites.map((p) => <Card post={p} sizes="22rem" />)}
+  </div>
+
+  <SectionTitle title="Browse by craft" />
+  <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+    {
+      tags.map((t) => (
+        <a href={`/tags/${t.slug}/`} class="group relative block aspect-[4/3] overflow-hidden rounded-xl">
+          <Image src={t.cover} alt="" widths={[300, 600]} sizes="(min-width: 48rem) 17rem, 50vw" class="h-full w-full object-cover brightness-50 transition duration-500 group-hover:scale-105 group-hover:brightness-75" />
+          <span class="absolute inset-0 flex flex-col items-center justify-center p-2 text-center">
+            <span class="text-lg font-bold sm:text-xl">{t.name}</span>
+            <span class="text-sm text-gray-200">{t.count} {t.count === 1 ? 'project' : 'projects'}</span>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</Base>

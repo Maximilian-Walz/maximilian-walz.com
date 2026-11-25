@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro'
+import Card from '../../components/Card.astro'
+import TagBar from '../../components/TagBar.astro'
+import { getPosts, getTags, tagSlug } from '../../lib/posts'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return getTags(posts).map((tag) => ({
+    params: { tag: tag.slug },
+    props: { tag, posts: posts.filter((p) => p.data.tags.some((t) => tagSlug(t) === tag.slug)) },
+  }))
+}
+const { tag, posts } = Astro.props
+---
+
+<Base title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
+  <h1 class="pt-2 text-3xl font-extrabold tracking-tight sm:text-4xl md:pt-5 md:text-6xl">{tag.name}</h1>
+  <TagBar active={tag.slug} />
+  <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+    {posts.map((p, i) => <Card post={p} eager={i < 2} />)}
+  </div>
+</Base>

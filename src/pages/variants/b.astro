@@ -1,0 +1,35 @@
+---
+// Homepage variant B: everything on one wall. Delete this folder once a design is chosen.
+import Base from '../../layouts/Base.astro'
+import Card from '../../components/Card.astro'
+import Intro from '../../components/Intro.astro'
+import { getPosts } from '../../lib/posts'
+
+const posts = await getPosts()
+const latestIds = new Set(posts.slice(0, 3).map((p) => p.id))
+// Latest three first, then favorites, then the rest by date.
+const rank = (p: (typeof posts)[number]) => (latestIds.has(p.id) ? 0 : p.data.favorite ? 1 : 2)
+const wall = [...posts].sort((a, b) => rank(a) - rank(b))
+---
+
+<Base wide title="Home, variant B">
+  <Intro />
+  <div class="wall grid grid-flow-dense auto-rows-[15rem] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      wall.map((p, i) => {
+        const big = i === 0 || (p.data.favorite && !latestIds.has(p.id))
+        return (
+          <div class:list={[big && 'sm:col-span-2 sm:row-span-2']}>
+            <Card
+              post={p}
+              overlay
+              eager={i === 0}
+              badge={latestIds.has(p.id) ? 'New' : p.data.favorite ? '★ Favorite' : undefined}
+              sizes={big ? '(min-width: 40rem) 45rem, 100vw' : '(min-width: 40rem) 23rem, 100vw'}
+            />
+          </div>
+        )
+      })
+    }
+  </div>
+</Base>

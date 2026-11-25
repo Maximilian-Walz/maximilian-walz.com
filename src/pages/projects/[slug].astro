@@ -1,0 +1,111 @@
+---
+import { getImage, Image } from 'astro:assets'
+import { render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import Tag from '../../components/Tag.astro'
+import { formatDate, getPosts, site } from '../../lib/posts'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }))
+}
+const { post, newer, older } = Astro.props
+const { Content } = await render(post)
+const og = await getImage({ src: post.cover, width: 1200, height: 630, format: 'jpg', fit: 'cover' })
+const glow = await getImage({ src: post.cover, width: 20, format: 'webp' })
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  datePublished: post.data.date.toISOString(),
+  description: post.data.summary,
+  image: new URL(og.src, Astro.site).href,
+  author: { '@type': 'Person', name: site.title, url: Astro.site },
+}
+---
+
+<Base title={post.data.title} description={post.data.summary} image={og.src}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <article>
+    <div class="relative aspect-[2/1] w-full">
+      <div class="glow" style={`background-image:url(${glow.src})`} aria-hidden="true"></div>
+      <Image
+        src={post.cover}
+        alt={post.data.title}
+        widths={[640, 960, 1280, 1920]}
+        sizes="(min-width: 64rem) 61rem, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="relative h-full w-full rounded-xl object-cover"
+        style={`view-transition-name: cover-${post.id}`}
+      />
+    </div>
+    <header class="pt-6 text-center">
+      <div class="flex flex-wrap gap-2">{post.data.tags.map((t) => <Tag name={t} />)}</div>
+      <h1 class="pt-8 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">{post.data.title}</h1>
+      <time class="mt-2 block font-medium text-gray-400" datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+    </header>
+    <div class="prose prose-invert sm:prose-lg py-8">
+      <Content />
+    </div>
+    <footer class="flex flex-col gap-4 border-t border-gray-800 pt-6 font-medium sm:flex-row sm:justify-between">
+      {older ? <a class="text-primary-500 hover:text-primary-400" href={`/projects/${older.id}/`}>← {older.data.title}</a> : <span />}
+      {newer && <a class="text-primary-500 hover:text-primary-400 sm:text-right" href={`/projects/${newer.id}/`}>{newer.data.title} →</a>}
+    </footer>
+  </article>
+  <dialog class="lightbox" aria-label="Enlarged image"><img alt="" /></dialog>
+</Base>
+
+<style>
+  /* Soft glow behind the hero: a 20px version of the cover, stretched and faded out at the edges.
+     Deliberately no CSS blur filter, which is expensive to paint. */
+  .glow {
+    position: absolute;
+    inset: -2.5rem;
+    background-size: 100% 100%;
+    opacity: 0.55;
+    mask-image: linear-gradient(to right, transparent, black 5rem, black calc(100% - 5rem), transparent),
+      linear-gradient(to bottom, transparent, black 5rem, black calc(100% - 5rem), transparent);
+    mask-composite: intersect;
+  }
+</style>
+
+<script>
+  // Lightbox: click an image in the post to view it full screen; arrows or swipe to move between images.
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.lightbox')!
+  const view = dialog.querySelector('img')!
+  const images = [...document.querySelectorAll<HTMLImageElement>('.prose figure img')]
+  let index = 0
+
+  function show(i: number) {
+    index = (i + images.length) % images.length
+    const img = images[index]
+    view.srcset = img.srcset
+    view.sizes = '100vw'
+    view.src = img.currentSrc || img.src
+    view.alt = img.alt
+  }
+  images.forEach((img, i) =>
+    img.addEventListener('click', () => {
+      show(i)
+      dialog.showModal()
+    }),
+  )
+  dialog.addEventListener('click', () => dialog.close())
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') show(index + 1)
+    if (e.key === 'ArrowLeft') show(index - 1)
+  })
+  let startX = 0
+  dialog.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true })
+  dialog.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - startX
+    if (Math.abs(dx) > 50) {
+      e.preventDefault()
+      show(index + (dx < 0 ? 1 : -1))
+    }
+  })
+</script>

@@ -1,0 +1,12 @@
+---
+title: "Custom Furniture for my Sofa"
+date: 2024-05-21
+tags: ["Woodworking"]
+summary: "I created a set of tables for my sofa."
+cover: ./big_table.jpg
+---
+
+As I needed some places to put my drinks and snacks while sitting on my sofa and I also wanted them to have specific dimensions, I decided to build them myself.
+Apart from the big table above I also created a smaller one that fits perfectly next to the sofa and has two levels, where the lower one still fits a bottle of Spezi or something similar and has rails to prevent stuff from being pushed off.
+
+![The small table](./small_table.jpg)

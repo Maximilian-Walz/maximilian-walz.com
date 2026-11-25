@@ -1,0 +1,18 @@
+---
+import { site } from '../lib/posts'
+const year = new Date().getFullYear()
+---
+
+<footer class="mt-16 mb-4 flex flex-col items-center gap-3 text-sm text-gray-400">
+  <div class="flex gap-5">
+    <a class="hover:text-primary-400" href={`mailto:${site.email}`}>Mail</a>
+    <a class="hover:text-primary-400" href={site.github} rel="me">GitHub</a>
+    <a class="hover:text-primary-400" href={site.reddit} rel="me">Reddit</a>
+    <a class="hover:text-primary-400" href="/feed.xml">RSS</a>
+  </div>
+  <div class="flex gap-2">
+    <span>© {year} {site.title}</span>
+    <span>·</span>
+    <a class="hover:text-primary-400" href="/legal/">Legal</a>
+  </div>
+</footer>

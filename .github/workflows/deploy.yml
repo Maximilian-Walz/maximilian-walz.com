@@ -1,0 +1,60 @@
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Where to deploy
+        type: choice
+        options: [test, production]
+        default: test
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-images-${{ hashFiles('src/content/**/*.{jpg,jpeg,png,webp}') }}
+          restore-keys: astro-images-
+      - run: npm ci
+      - run: npm run images:check
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          include-hidden-files: true
+
+  deploy:
+    # Off until the repository variable DEPLOY_ENABLED is set to "true"
+    # and the secrets SSH_HOST, SSH_USER and SSH_KEY exist.
+    if: github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      TARGET: ${{ github.event_name == 'push' && 'production' || inputs.target }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+      - name: Upload with rsync
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id && chmod 600 ~/.ssh/id
+          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+          rsync -az --delete -e "ssh -i ~/.ssh/id" dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:httpdocs/$TARGET/"

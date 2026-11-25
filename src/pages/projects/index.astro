@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro'
+import Card from '../../components/Card.astro'
+import TagBar from '../../components/TagBar.astro'
+import { getPosts } from '../../lib/posts'
+const posts = await getPosts()
+---
+
+<Base title="Projects" description="Everything I have made so far.">
+  <h1 class="pt-2 text-3xl font-extrabold tracking-tight sm:text-4xl md:pt-5 md:text-6xl">All Projects</h1>
+  <TagBar />
+  <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+    {posts.map((p, i) => <Card post={p} eager={i < 2} />)}
+  </div>
+</Base>
