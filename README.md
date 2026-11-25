@@ -57,6 +57,8 @@ Text in plain Markdown.
 ![become a gallery](./b.jpg)
 ```
 
+Posts can also be written in the browser, on a phone or a computer, with the editor at `/admin` ([Sveltia CMS](https://sveltiacms.app)). It signs in with a GitHub access token and commits to this repository; its settings are in `public/admin/config.yml`.
+
 Image sizes and formats are handled by the build. A new tag needs no setup: it appears as a craft on the home page and in the filter on its own.
 
 ## Structure

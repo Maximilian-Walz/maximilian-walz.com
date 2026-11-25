@@ -5,6 +5,7 @@ Static personal portfolio (Astro 7, Tailwind 4, no client framework). Goals in o
 - Posts: `src/content/posts/<slug>/index.md` with images beside it. Schema in `src/content.config.ts`. The folder name is the URL slug; do not rename existing folders (URLs are public).
 - Markdown engine is Sätteri (Astro's default), not remark/rehype. The gallery/figure plugin is `src/plugins/figures.ts`. After changing a Markdown plugin, delete `.astro/` and `node_modules/.astro/data-store.json`, since rendered posts are cached.
 - Images: never commit files with EXIF or larger than 3000 px; `npm run images` fixes them, the pre-commit hook does it automatically, `npm run images:check` verifies. The repo is meant to become public.
+- The browser editor at `/admin` is Sveltia CMS (`public/admin/`). It writes image paths as bare filenames (`cover: photo.webp`, `![x](photo.webp)`) and uploads WebP; both must keep building. If the post schema changes, change `public/admin/config.yml` to match.
 - No analytics, no cookies, no third-party requests. The legal page states this; keep it true.
 - `compressHTML: true` is deliberate: Astro 7's default (`'jsx'`) removes the space before a link that starts on a new line.
 - Design: picture-first, no pill-shaped chips or badges (the owner dislikes them); links and tags are plain text.

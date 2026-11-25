@@ -1,0 +1,65 @@
+# Settings for the post editor at /admin (Sveltia CMS, https://sveltiacms.app/en/docs).
+# Saving in the editor commits straight to the main branch, which builds and deploys the site.
+
+backend:
+  name: github
+  repo: Maximilian-Walz/maximilian-walz.com
+  branch: main
+  # Sign in with a personal access token: no login server needed.
+  auth_methods: [token]
+  commit_messages:
+    create: 'Add post "{{slug}}"'
+    update: 'Update post "{{slug}}"'
+    delete: 'Delete post "{{slug}}"'
+    uploadMedia: 'Upload "{{path}}"'
+    deleteMedia: 'Delete "{{path}}"'
+
+site_url: https://maximilian-walz.com
+
+# Fallback location; posts keep their images in their own folder (see the collection below).
+media_folder: src/assets
+public_folder: /src/assets
+
+media_libraries:
+  all:
+    slugify_filename: true
+    # Photos are shrunk and re-encoded in the browser before they are committed.
+    # This also strips their metadata (camera, date, GPS), so it never reaches the repository.
+    transformations:
+      raster_image:
+        format: webp
+        quality: 90
+        width: 3000
+        height: 3000
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+  lowercase: true
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    folder: src/content/posts
+    # One folder per post: <slug>/index.md with its images beside it.
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, type: date, default: '{{now}}' }
+      - name: tags
+        label: Crafts
+        widget: list
+        hint: Reuse an existing craft where it fits, for example Woodworking. A new one gets its own tile automatically.
+      - { name: summary, label: Summary, widget: text, required: false, hint: One sentence, shown on the large tiles and in link previews. }
+      - { name: cover, label: Cover image, widget: image, hint: The main picture, shown on tiles and at the top of the post. }
+      - { name: favorite, label: Favorite, widget: boolean, required: false, default: false, hint: Feature this post on the home page. }
+      - { name: draft, label: Draft, widget: boolean, required: false, default: false, hint: Drafts are not published. }
+      - { name: body, label: Text, widget: markdown, hint: 'A single image becomes a figure. Several images in a row become a gallery.' }
