@@ -2,16 +2,15 @@
 // Logo comparison for review. Delete this page once a logo is chosen.
 import Base from '../../layouts/Base.astro'
 import current from '../../assets/logo.svg?raw'
-import a from '../../assets/logo-a.svg?raw'
 import b from '../../assets/logo-b.svg?raw'
-import c from '../../assets/logo-c.svg?raw'
+import d from '../../assets/logo-d.svg?raw'
 const sizes = ['w-40', 'w-20', 'w-10', 'w-6']
 ---
 
 <Base title="Logo comparison" wide>
-  <div class="grid gap-12 py-10 sm:grid-cols-2 lg:grid-cols-4">
+  <div class="grid gap-12 py-10 sm:grid-cols-2 lg:grid-cols-3">
     {
-      [['Current', current], ['A: rounded M', a], ['B: lowercase m', b], ['C: badge', c]].map(([name, svg]) => (
+      [['Current', current], ['D: woven peaks', d], ['B: lowercase m', b]].map(([name, svg]) => (
         <section>
           <h2 class="mb-6 text-2xl font-bold">{name}</h2>
           <div class="flex flex-col gap-8">

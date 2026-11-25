@@ -42,6 +42,8 @@
 
 html {
   color-scheme: dark;
+  /* Reserve the scrollbar's space so the layout does not shift between short and long pages. */
+  scrollbar-gutter: stable;
   scrollbar-color: var(--color-gray-700) transparent;
   scrollbar-width: thin;
   scroll-behavior: smooth;
@@ -123,15 +125,18 @@ dialog.lightbox img {
   cursor: zoom-out;
 }
 
-/* ---------- Horizontal card row ---------- */
-.snap-row {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 0.75rem;
+/* ---------- Photo wall (projects, tag pages) ---------- */
+.wall-tile .caption {
+  opacity: 0;
+  transition: opacity 0.25s;
 }
-.snap-row > * {
-  scroll-snap-align: start;
-  flex: 0 0 min(22rem, 80%);
+.wall-tile:hover .caption,
+.wall-tile:focus-visible .caption {
+  opacity: 1;
+}
+/* Touch screens have no hover: always show the caption there. */
+@media (hover: none) {
+  .wall-tile .caption {
+    opacity: 1;
+  }
 }

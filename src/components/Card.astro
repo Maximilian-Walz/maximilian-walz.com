@@ -1,33 +1,23 @@
 ---
+// A cropped tile with the title over the image. Used in the homepage grid.
 import { Image } from 'astro:assets'
 import Tag from './Tag.astro'
-import { formatDate, type Post } from '../lib/posts'
+import type { Post } from '../lib/posts'
 
 interface Props {
   post: Post
-  /** Give the image a shared view-transition name. Must be true at most once per post per page. */
-  morph?: boolean
-  /** Text over the image instead of below it. */
-  overlay?: boolean
+  /** Large tiles also show the summary. */
+  big?: boolean
   eager?: boolean
+  label?: string
   sizes?: string
-  aspect?: string
-  badge?: string
 }
-const {
-  post,
-  morph = true,
-  overlay = false,
-  eager = false,
-  sizes = '(min-width: 64rem) 30rem, (min-width: 40rem) 50vw, 100vw',
-  aspect = 'aspect-[16/9]',
-  badge,
-} = Astro.props
+const { post, big = false, eager = false, label, sizes = '(min-width: 40rem) 23rem, 100vw' } = Astro.props
 const href = `/projects/${post.id}/`
 ---
 
-<article class:list={['group relative overflow-hidden rounded-xl', overlay && 'h-full']}>
-  <a href={href} tabindex="-1" aria-hidden="true" class:list={['block overflow-hidden rounded-xl', overlay ? 'h-full' : aspect]}>
+<article class="group relative h-full overflow-hidden rounded-xl">
+  <a href={href} tabindex="-1" aria-hidden="true" class="block h-full">
     <Image
       src={post.cover}
       alt=""
@@ -36,18 +26,17 @@ const href = `/projects/${post.id}/`
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-      style={morph ? `view-transition-name: cover-${post.id}` : undefined}
+      style={`view-transition-name: cover-${post.id}`}
     />
   </a>
-  {badge && <span class="absolute top-3 left-3 rounded-full bg-gray-950/80 px-2.5 py-0.5 text-xs font-medium text-primary-300 backdrop-blur">{badge}</span>}
-  <div class:list={overlay ? 'pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950/95 via-gray-950/70 to-transparent p-4 pt-16' : 'px-1 pt-3 pb-2'}>
-    <h3 class="text-xl leading-7 font-bold tracking-tight sm:text-2xl">
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-gray-950/95 via-gray-950/60 to-transparent p-4 pt-16">
+    {label && <p class="mb-1 text-xs font-semibold tracking-wider text-gray-300 uppercase">{label}</p>}
+    <h3 class:list={['font-bold tracking-tight', big ? 'text-2xl sm:text-3xl' : 'text-xl leading-6']}>
       <a href={href} class="pointer-events-auto hover:text-primary-400">{post.data.title}</a>
     </h3>
-    <p class:list={['mt-1 line-clamp-2', overlay ? 'text-gray-200' : 'text-gray-400']}>{post.data.summary}</p>
-    <div class="pointer-events-auto mt-3 flex flex-wrap items-center gap-2">
+    {big && post.data.summary && <p class="mt-1 line-clamp-2 text-gray-200">{post.data.summary}</p>}
+    <div class="pointer-events-auto mt-2 flex flex-wrap gap-x-3">
       {post.data.tags.map((t) => <Tag name={t} />)}
-      <time class="ml-auto text-xs text-gray-400" datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
     </div>
   </div>
 </article>

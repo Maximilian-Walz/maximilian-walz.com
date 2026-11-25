@@ -2,21 +2,11 @@
 import { tagSlug } from '../lib/posts'
 interface Props {
   name: string
-  href?: string
-  count?: number
-  active?: boolean
+  /** Render as plain text, for use inside another link. */
+  plain?: boolean
 }
-const { name, href = `/tags/${tagSlug(name)}/`, count, active = true } = Astro.props
+const { name, plain = false } = Astro.props
+const cls = 'text-xs font-semibold tracking-wider whitespace-nowrap text-primary-400 uppercase'
 ---
 
-<a
-  href={href}
-  class:list={[
-    'rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap',
-    active
-      ? 'bg-primary-700 text-primary-400 hover:text-primary-300'
-      : 'bg-primary-900 text-primary-500 hover:text-primary-400',
-  ]}
->
-  {name}{count !== undefined && ` (${count})`}
-</a>
+{plain ? <span class={cls}>{name}</span> : <a href={`/tags/${tagSlug(name)}/`} class:list={[cls, 'hover:text-primary-200']}>{name}</a>}

@@ -40,10 +40,12 @@ const ogImage = image ? new URL(image, Astro.site) : undefined
     <slot name="head" />
   </head>
   <body class="bg-gray-950 font-sans text-white antialiased">
-    <div class:list={['mx-auto flex min-h-dvh flex-col px-4 sm:px-6', wide ? 'max-w-6xl' : 'max-w-5xl']}>
-      <Header />
-      <main class="mb-auto pt-4"><slot /></main>
-      <Footer />
+    <div class="flex min-h-dvh flex-col">
+      <Header wide={wide} />
+      <div class:list={['mx-auto flex w-full grow flex-col px-4 sm:px-6', wide ? 'max-w-6xl' : 'max-w-5xl']}>
+        <main class="mb-auto pt-4"><slot /></main>
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

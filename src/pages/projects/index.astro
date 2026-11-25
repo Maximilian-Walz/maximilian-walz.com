@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro'
-import PostGrid from '../../components/PostGrid.astro'
+import Wall from '../../components/Wall.astro'
 import TagBar from '../../components/TagBar.astro'
 import { getPosts } from '../../lib/posts'
 const posts = await getPosts()
@@ -8,7 +8,6 @@ const posts = await getPosts()
 
 <Base wide title="Projects" description="Everything I have made so far.">
   <h1 class="pt-6 text-4xl font-extrabold tracking-tight md:text-5xl">Projects</h1>
-  <p class="mt-2 text-lg text-gray-400">Everything I have made so far, newest first.</p>
   <TagBar />
-  <PostGrid posts={posts} />
+  <Wall posts={posts} />
 </Base>

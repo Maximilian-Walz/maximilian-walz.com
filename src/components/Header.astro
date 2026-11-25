@@ -2,31 +2,38 @@
 import logo from '../assets/logo.svg?raw'
 import { site } from '../lib/posts'
 
+interface Props {
+  wide?: boolean
+}
+const { wide = false } = Astro.props
 const links = [
   { href: '/projects/', title: 'Projects' },
   { href: '/about/', title: 'About' },
 ]
 const path = Astro.url.pathname
+const isCurrent = (href: string) => path.startsWith(href) || (href === '/projects/' && path.startsWith('/tags/'))
 ---
 
-<header class="sticky top-0 z-20 -mx-4 flex items-center justify-between bg-gray-950/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 md:py-4">
-  <a href="/" aria-label={`${site.title}, home`} class="flex items-center gap-3">
-    <span class="logo block w-12" set:html={logo} />
-    <span class="hidden text-xl font-semibold tracking-tight sm:block">{site.title}</span>
-  </a>
-  <nav class="flex items-center gap-1">
-    {
-      links.map((l) => (
-        <a
-          href={l.href}
-          aria-current={path.startsWith(l.href) ? 'page' : undefined}
-          class="rounded-full px-3 py-1.5 text-sm font-medium text-gray-200 hover:text-primary-400 aria-[current=page]:bg-gray-800 aria-[current=page]:text-white"
-        >
-          {l.title}
-        </a>
-      ))
-    }
-  </nav>
+<header class="sticky top-0 z-20 border-b border-gray-900 bg-gray-950/85 backdrop-blur-md" style="view-transition-name: site-header">
+  <div class:list={['mx-auto flex items-center justify-between px-4 py-3 sm:px-6', wide ? 'max-w-6xl' : 'max-w-5xl']}>
+    <a href="/" aria-label={`${site.title}, home`} class="flex items-center gap-3">
+      <span class="logo block w-12" set:html={logo} />
+      <span class="hidden text-xl font-semibold tracking-tight sm:block">{site.title}</span>
+    </a>
+    <nav class="flex items-center gap-6 font-medium">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            aria-current={isCurrent(l.href) ? 'page' : undefined}
+            class="text-gray-300 decoration-primary-500 decoration-2 underline-offset-8 hover:text-white aria-[current=page]:text-white aria-[current=page]:underline"
+          >
+            {l.title}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
 </header>
 
 <style>

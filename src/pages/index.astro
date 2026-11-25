@@ -31,9 +31,9 @@ const wall = [...picked, ...rest.slice(0, (3 - (picked.length % 3)) % 3)]
           <div class:list={[big && 'sm:col-span-2 sm:row-span-2', right && 'lg:col-start-2']}>
             <Card
               post={p}
-              overlay
+              big={big}
               eager={i === 0}
-              badge={i < LATEST ? 'Latest' : undefined}
+              label={i === 0 ? 'Latest' : undefined}
               sizes={big ? '(min-width: 40rem) 45rem, 100vw' : '(min-width: 40rem) 23rem, 100vw'}
             />
           </div>

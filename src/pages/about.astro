@@ -1,10 +1,15 @@
 ---
 import { Image } from 'astro:assets'
 import Base from '../layouts/Base.astro'
-import Chip from '../components/Chip.astro'
+import Icon from '../components/Icon.astro'
 import avatar from '../assets/avatar.png'
-import { getPosts, getTags, site } from '../lib/posts'
-const tags = getTags(await getPosts())
+import { site } from '../lib/posts'
+
+const contacts = [
+  { name: 'mail', label: site.email, href: `mailto:${site.email}` },
+  { name: 'github', label: 'GitHub', href: site.github },
+  { name: 'reddit', label: 'Reddit', href: site.reddit },
+] as const
 ---
 
 <Base title="About">
@@ -17,10 +22,12 @@ const tags = getTags(await getPosts())
       </div>
     </div>
 
-    <div class="mt-8 space-y-5 text-lg leading-8 text-gray-200">
+    <div class="about mt-8 space-y-5 text-lg leading-8 text-gray-200">
       <p>
-        Welcome to my site, where I share the stuff I create in my free time. My interests range from woodworking,
-        metalwork and jewelry to analog photography and digital art.
+        Welcome to my site, where I share the stuff I create in my free time. My interests range from
+        <a href="/tags/woodworking/">woodworking</a>, <a href="/tags/metalworking/">metalwork</a> and
+        <a href="/tags/jewelry/">jewelry</a> to <a href="/tags/analog-photography/">analog photography</a> and
+        <a href="/tags/digital-art/">digital art</a>.
       </p>
       <p>
         This site motivates me to make each project the best it can be, providing a platform to showcase my creative
@@ -28,16 +35,26 @@ const tags = getTags(await getPosts())
       </p>
     </div>
 
-    <h2 class="mt-12 text-sm font-semibold tracking-widest text-gray-400 uppercase">What I make</h2>
-    <div class="mt-4 flex flex-wrap gap-2">
-      {tags.map((t) => <Chip href={`/tags/${t.slug}/`} count={t.count}>{t.name}</Chip>)}
-    </div>
-
-    <h2 class="mt-12 text-sm font-semibold tracking-widest text-gray-400 uppercase">Get in touch</h2>
-    <div class="mt-4 flex flex-wrap gap-2">
-      <Chip href={`mailto:${site.email}`}>{site.email}</Chip>
-      <Chip href={site.github}>GitHub</Chip>
-      <Chip href={site.reddit}>Reddit</Chip>
-    </div>
+    <ul class="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-8">
+      {
+        contacts.map((c) => (
+          <li>
+            <a href={c.href} class="flex items-center gap-2.5 text-gray-200 transition-colors hover:text-primary-400">
+              <Icon name={c.name} class="h-5 w-5" />
+              {c.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </Base>
+
+<style>
+  .about a {
+    color: var(--color-primary-500);
+  }
+  .about a:hover {
+    color: var(--color-primary-400);
+  }
+</style>

@@ -1,15 +1,26 @@
 ---
-import Chip from './Chip.astro'
 import { getPosts, getTags } from '../lib/posts'
 interface Props {
   active?: string
 }
 const { active } = Astro.props
 const posts = await getPosts()
-const tags = getTags(posts)
+const items = [
+  { name: 'All', href: '/projects/', count: posts.length, current: !active },
+  ...getTags(posts).map((t) => ({ name: t.name, href: `/tags/${t.slug}/`, count: t.count, current: t.slug === active })),
+]
 ---
 
-<nav aria-label="Filter by craft" class="mt-6 mb-8 flex flex-wrap gap-2">
-  <Chip href="/projects/" count={posts.length} active={!active}>All</Chip>
-  {tags.map((t) => <Chip href={`/tags/${t.slug}/`} count={t.count} active={t.slug === active}>{t.name}</Chip>)}
+<nav aria-label="Filter by craft" class="mt-6 mb-8 flex flex-wrap gap-x-7 gap-y-1 border-b border-gray-800">
+  {
+    items.map((i) => (
+      <a
+        href={i.href}
+        aria-current={i.current ? 'page' : undefined}
+        class="-mb-px border-b-2 border-transparent py-2.5 whitespace-nowrap text-gray-400 hover:text-white aria-[current=page]:border-primary-500 aria-[current=page]:text-white"
+      >
+        {i.name}<sup class="ml-1 text-gray-500">{i.count}</sup>
+      </a>
+    ))
+  }
 </nav>

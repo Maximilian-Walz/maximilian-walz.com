@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro'
-import PostGrid from '../../components/PostGrid.astro'
+import Wall from '../../components/Wall.astro'
 import TagBar from '../../components/TagBar.astro'
 import { getPosts, getTags, tagSlug } from '../../lib/posts'
 
@@ -15,8 +15,7 @@ const { tag, posts } = Astro.props
 ---
 
 <Base wide title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
-  <h1 class="pt-6 text-4xl font-extrabold tracking-tight md:text-5xl">{tag.name}</h1>
-  <p class="mt-2 text-lg text-gray-400">{tag.count} {tag.count === 1 ? 'project' : 'projects'}</p>
+  <h1 class="pt-6 text-4xl font-extrabold tracking-tight md:text-5xl">Projects</h1>
   <TagBar active={tag.slug} />
-  <PostGrid posts={posts} />
+  <Wall posts={posts} />
 </Base>
