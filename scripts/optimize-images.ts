@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Downsizes images and strips all metadata (EXIF, GPS) in place.
-//   node scripts/optimize-images.mjs [files...]   fix given files (default: all content images)
-//   node scripts/optimize-images.mjs --check      exit 1 if any image still needs fixing
+//   node scripts/optimize-images.ts [files...]   fix given files (default: all content images)
+//   node scripts/optimize-images.ts --check      exit 1 if any image still needs fixing
 import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { extname, join } from 'node:path'
 import sharp from 'sharp'
@@ -10,8 +10,8 @@ const MAX_EDGE = 3000
 const ROOTS = ['src/content', 'src/assets']
 const EXTS = new Set(['.jpg', '.jpeg', '.png', '.webp'])
 
-async function walk(dir) {
-  const out = []
+async function walk(dir: string): Promise<string[]> {
+  const out: string[] = []
   for (const e of await readdir(dir, { withFileTypes: true }).catch(() => [])) {
     const p = join(dir, e.name)
     if (e.isDirectory()) out.push(...(await walk(p)))
@@ -25,7 +25,7 @@ const check = args.includes('--check')
 let files = args.filter((a) => !a.startsWith('--') && EXTS.has(extname(a).toLowerCase()))
 if (!files.length) files = (await Promise.all(ROOTS.map(walk))).flat()
 
-const bad = []
+const bad: string[] = []
 for (const file of files) {
   const input = await readFile(file)
   const meta = await sharp(input).metadata()

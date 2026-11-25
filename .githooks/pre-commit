@@ -2,5 +2,5 @@
 # Downsize staged images and strip their metadata (EXIF, GPS) before they enter the repo.
 files=$(git diff --cached --name-only --diff-filter=AM | grep -iE '^src/.*\.(jpe?g|png|webp)$')
 [ -z "$files" ] && exit 0
-echo "$files" | tr '\n' '\0' | xargs -0 node scripts/optimize-images.mjs || exit 1
+echo "$files" | tr '\n' '\0' | xargs -0 node scripts/optimize-images.ts || exit 1
 echo "$files" | tr '\n' '\0' | xargs -0 git add

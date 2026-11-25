@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config'
 import { satteri } from '@astrojs/markdown-satteri'
 import sitemap from '@astrojs/sitemap'
 import tailwindcss from '@tailwindcss/vite'
-import figures from './src/plugins/figures.mjs'
+import figures from './src/plugins/figures.ts'
 
 export default defineConfig({
   site: 'https://maximilian-walz.com',
