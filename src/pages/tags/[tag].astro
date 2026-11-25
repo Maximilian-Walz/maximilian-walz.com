@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro'
 import CraftTiles from '../../components/CraftTiles.astro'
-import YearGrid from '../../components/YearGrid.astro'
+import Card from '../../components/Card.astro'
 import { getPosts, getTags, tagSlug } from '../../lib/posts'
 
 export async function getStaticPaths() {
@@ -17,5 +17,7 @@ const { tag, posts } = Astro.props
 <Base wide title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
   <h1 class="pt-6 pb-6 text-4xl font-extrabold tracking-tight md:text-5xl">Projects</h1>
   <CraftTiles filter active={tag.slug} />
-  <YearGrid posts={posts} />
+  <div class="mt-8 grid auto-rows-[15rem] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {posts.map((p, i) => <Card post={p} eager={i < 3} sizes="(min-width: 64rem) 23rem, (min-width: 40rem) 50vw, 100vw" />)}
+  </div>
 </Base>

@@ -29,13 +29,9 @@ const ogImage = image ? new URL(image, Astro.site) : undefined
     <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/feed.xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta name="theme-color" content="#0c0c0e" />
+    <meta name="theme-color" content="#0f0d0b" />
     <!-- Stops the Dark Reader extension from recolouring a site that is already dark. -->
     <meta name="darkreader-lock" />
-    <!-- Temporary: colour preview chosen on /variants/colors/. Remove with that page. -->
-    <script is:inline>
-      document.documentElement.dataset.palette = localStorage.getItem('palette') || ''
-    </script>
     <meta property="og:site_name" content={site.title} />
     <meta property="og:title" content={title ?? site.title} />
     <meta property="og:description" content={description} />
