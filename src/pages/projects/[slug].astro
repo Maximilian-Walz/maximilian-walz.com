@@ -39,7 +39,7 @@ const jsonLd = {
         sizes="(min-width: 64rem) 61rem, 100vw"
         loading="eager"
         fetchpriority="high"
-        class="relative h-full w-full rounded-xl object-cover"
+        class="hero relative h-full w-full cursor-zoom-in rounded-xl object-cover"
         style={`view-transition-name: cover-${post.id}`}
       />
     </div>
@@ -92,7 +92,7 @@ const jsonLd = {
   // Lightbox: click an image in the post to view it full screen; arrows or swipe to move between images.
   const dialog = document.querySelector<HTMLDialogElement>('dialog.lightbox')!
   const view = dialog.querySelector('img')!
-  const images = [...document.querySelectorAll<HTMLImageElement>('.prose figure img')]
+  const images = [...document.querySelectorAll<HTMLImageElement>('img.hero, .prose figure img')]
   let index = 0
 
   function show(i: number) {

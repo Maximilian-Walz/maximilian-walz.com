@@ -1,0 +1,68 @@
+---
+// Crafts as image tiles, for any number of crafts.
+// Homepage: tiles in the last row grow to fill it. Filter: small equal tiles, as many per row as fit.
+import { Image } from 'astro:assets'
+import { getPosts, getTags } from '../lib/posts'
+interface Props {
+  /** Slug of the selected craft; turns the tiles into a filter with an "All" tile. */
+  active?: string
+  filter?: boolean
+}
+const { active, filter = false } = Astro.props
+const posts = await getPosts()
+const tags = getTags(posts)
+const dim = (current: boolean) => (!filter || current ? 'brightness-[.55] group-hover:brightness-75' : 'brightness-[.3] group-hover:brightness-50')
+---
+
+<nav aria-label="Crafts" class:list={filter ? 'grid grid-cols-[repeat(auto-fill,minmax(6.5rem,1fr))] gap-3 text-sm' : 'flex flex-wrap gap-4'}>
+  {
+    filter && (
+      <a href="/projects/" aria-current={!active ? 'page' : undefined} class="tile group h-20 bg-gray-900">
+        <span class="label"><span class="font-bold">All</span><span class="count">{posts.length}</span></span>
+      </a>
+    )
+  }
+  {
+    tags.map((t) => (
+      <a href={`/tags/${t.slug}/`} aria-current={t.slug === active ? 'page' : undefined} class:list={['tile group', filter ? 'h-20' : 'h-40 grow basis-56']}>
+        <Image src={t.cover} alt="" widths={[300, 600]} sizes={filter ? '8rem' : '(min-width: 48rem) 17rem, 50vw'} class:list={['h-full w-full object-cover transition duration-500 group-hover:scale-105', dim(t.slug === active)]} />
+        <span class="label">
+          <span class:list={['font-bold', !filter && 'text-lg sm:text-xl']}>{t.name}</span>
+          <span class="count">{t.count}{!filter && (t.count === 1 ? ' project' : ' projects')}</span>
+        </span>
+      </a>
+    ))
+  }
+</nav>
+
+<style>
+  .tile {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: 0.75rem;
+  }
+  /* Ring drawn above the image to mark the selected craft. */
+  .tile[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 2px var(--color-primary-500);
+  }
+  .label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    text-align: center;
+    line-height: 1.25;
+  }
+  .count {
+    font-size: 0.875rem;
+    color: var(--color-gray-300);
+  }
+</style>

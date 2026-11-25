@@ -26,7 +26,7 @@ const isCurrent = (href: string) => path.startsWith(href) || (href === '/project
           <a
             href={l.href}
             aria-current={isCurrent(l.href) ? 'page' : undefined}
-            class="text-gray-300 decoration-primary-500 decoration-2 underline-offset-8 hover:text-white aria-[current=page]:text-white aria-[current=page]:underline"
+            class="text-gray-400 transition-colors hover:text-white aria-[current=page]:text-white"
           >
             {l.title}
           </a>

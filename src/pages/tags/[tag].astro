@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro'
-import Wall from '../../components/Wall.astro'
-import TagBar from '../../components/TagBar.astro'
+import CraftTiles from '../../components/CraftTiles.astro'
+import YearGrid from '../../components/YearGrid.astro'
 import { getPosts, getTags, tagSlug } from '../../lib/posts'
 
 export async function getStaticPaths() {
@@ -15,7 +15,7 @@ const { tag, posts } = Astro.props
 ---
 
 <Base wide title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
-  <h1 class="pt-6 text-4xl font-extrabold tracking-tight md:text-5xl">Projects</h1>
-  <TagBar active={tag.slug} />
-  <Wall posts={posts} />
+  <h1 class="pt-6 pb-6 text-4xl font-extrabold tracking-tight md:text-5xl">Projects</h1>
+  <CraftTiles filter active={tag.slug} />
+  <YearGrid posts={posts} />
 </Base>

@@ -1,13 +1,12 @@
 ---
-import { Image } from 'astro:assets'
 import Base from '../layouts/Base.astro'
 import Card from '../components/Card.astro'
+import CraftTiles from '../components/CraftTiles.astro'
 import Intro from '../components/Intro.astro'
 import SectionTitle from '../components/SectionTitle.astro'
-import { getPosts, getTags } from '../lib/posts'
+import { getPosts } from '../lib/posts'
 
 const posts = await getPosts()
-const tags = getTags(posts)
 
 // The wall: the three latest posts, then favorites, topped up with recent posts to fill whole rows of three.
 const LATEST = 3
@@ -46,17 +45,5 @@ const wall = [...picked, ...rest.slice(0, (3 - (picked.length % 3)) % 3)]
   </div>
 
   <SectionTitle title="Browse by craft" />
-  <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-    {
-      tags.map((t) => (
-        <a href={`/tags/${t.slug}/`} class="group relative block aspect-[4/3] overflow-hidden rounded-xl">
-          <Image src={t.cover} alt="" widths={[300, 600]} sizes="(min-width: 48rem) 17rem, 50vw" class="h-full w-full object-cover brightness-50 transition duration-500 group-hover:scale-105 group-hover:brightness-75" />
-          <span class="absolute inset-0 flex flex-col items-center justify-center p-2 text-center">
-            <span class="text-lg font-bold sm:text-xl">{t.name}</span>
-            <span class="text-sm text-gray-200">{t.count} {t.count === 1 ? 'project' : 'projects'}</span>
-          </span>
-        </a>
-      ))
-    }
-  </div>
+  <CraftTiles />
 </Base>

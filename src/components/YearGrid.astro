@@ -1,0 +1,22 @@
+---
+// Projects grouped by year: the year stays in view on the left while its projects scroll past.
+import Card from './Card.astro'
+import type { Post } from '../lib/posts'
+interface Props {
+  posts: Post[]
+}
+const { posts } = Astro.props
+const years = [...new Set(posts.map((p) => p.data.date.getUTCFullYear()))]
+let n = 0
+---
+
+{
+  years.map((year) => (
+    <section class="mt-10 gap-8 md:flex">
+      <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-700 md:sticky md:top-24 md:mb-0 md:w-24 md:shrink-0 md:self-start md:text-4xl">{year}</h2>
+      <div class="grid grow auto-rows-[15rem] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.filter((p) => p.data.date.getUTCFullYear() === year).map((p) => <Card post={p} eager={n++ < 3} sizes="(min-width: 64rem) 19rem, (min-width: 40rem) 50vw, 100vw" />)}
+      </div>
+    </section>
+  ))
+}
