@@ -40,7 +40,8 @@ const contacts = [
         contacts.map((c) => (
           <li>
             <a href={c.href} class="flex items-center gap-2.5 text-gray-200 transition-colors hover:text-primary-400">
-              <Icon name={c.name} class="h-5 w-5" />
+              {/* The email address is all lowercase, so its visual middle sits lower than a capitalised label's: nudge the envelope down to match. */}
+              <Icon name={c.name} class:list={['h-5 w-5', c.name === 'mail' && 'translate-y-px']} />
               {c.label}
             </a>
           </li>

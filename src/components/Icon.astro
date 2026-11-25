@@ -2,6 +2,7 @@
 interface Props {
   name: 'mail' | 'github' | 'reddit' | 'rss'
   class?: string
+  'class:list'?: unknown
 }
 const { name, class: cls = 'h-6 w-6' } = Astro.props
 const icons = {
