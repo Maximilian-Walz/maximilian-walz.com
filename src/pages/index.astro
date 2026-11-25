@@ -7,27 +7,42 @@ import SectionTitle from '../components/SectionTitle.astro'
 import { getPosts, getTags } from '../lib/posts'
 
 const posts = await getPosts()
-const latest = posts.slice(0, 3)
-const latestIds = new Set(latest.map((p) => p.id))
-// Favorites that are not already shown under Latest, so older work stays visible.
-const favorites = posts.filter((p) => p.data.favorite && !latestIds.has(p.id))
 const tags = getTags(posts)
+
+// The wall: the three latest posts, then favorites, topped up with recent posts to fill whole rows of three.
+const LATEST = 3
+const latest = posts.slice(0, LATEST)
+const favorites = posts.filter((p) => p.data.favorite && !latest.includes(p))
+const rest = posts.filter((p) => !latest.includes(p) && !favorites.includes(p))
+const picked = [...latest, ...favorites]
+const wall = [...picked, ...rest.slice(0, (3 - (picked.length % 3)) % 3)]
 ---
 
 <Base wide>
   <Intro />
 
-  <SectionTitle title="Latest" href="/projects/" linkText="All projects" />
-  <div class="grid gap-6 md:h-[30rem] md:grid-cols-3 md:grid-rows-2">
-    <div class="h-80 md:col-span-2 md:row-span-2 md:h-auto">
-      <Card post={latest[0]} overlay eager sizes="(min-width: 48rem) 45rem, 100vw" />
-    </div>
-    {latest.slice(1).map((p) => <div class="h-64 md:h-auto"><Card post={p} overlay sizes="(min-width: 48rem) 23rem, 100vw" /></div>)}
+  <div class="grid grid-flow-dense auto-rows-[15rem] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      wall.map((p, i) => {
+        // Each row of three has one large tile, alternating between the left and right side.
+        const big = i % 3 === 0
+        const right = big && (i / 3) % 2 === 1
+        return (
+          <div class:list={[big && 'sm:col-span-2 sm:row-span-2', right && 'lg:col-start-2']}>
+            <Card
+              post={p}
+              overlay
+              eager={i === 0}
+              badge={i < LATEST ? 'Latest' : undefined}
+              sizes={big ? '(min-width: 40rem) 45rem, 100vw' : '(min-width: 40rem) 23rem, 100vw'}
+            />
+          </div>
+        )
+      })
+    }
   </div>
-
-  <SectionTitle title="My Favorites" />
-  <div class="snap-row">
-    {favorites.map((p) => <Card post={p} sizes="22rem" />)}
+  <div class="mt-4 text-right">
+    <a href="/projects/" class="font-medium text-primary-500 hover:text-primary-400">All {posts.length} projects →</a>
   </div>
 
   <SectionTitle title="Browse by craft" />

@@ -1,0 +1,31 @@
+---
+// Logo comparison for review. Delete this page once a logo is chosen.
+import Base from '../../layouts/Base.astro'
+import current from '../../assets/logo.svg?raw'
+import draft from '../../assets/logo-draft.svg?raw'
+const sizes = ['w-64', 'w-24', 'w-14', 'w-8']
+---
+
+<Base title="Logo comparison">
+  <div class="grid gap-12 py-10 sm:grid-cols-2">
+    {
+      [['Current', current], ['Draft', draft]].map(([name, svg]) => (
+        <section>
+          <h2 class="mb-6 text-2xl font-bold">{name}</h2>
+          <div class="flex flex-col gap-8">
+            {sizes.map((s) => <div class:list={['logo', s]} set:html={svg} />)}
+            <div class="flex items-center gap-3"><span class="logo w-14" set:html={svg} /><span class="text-2xl font-semibold">Maximilian Walz</span></div>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</Base>
+
+<style>
+  .logo :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

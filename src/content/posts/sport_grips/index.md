@@ -7,6 +7,6 @@ cover: ./sport_grips_closeup.jpg
 favorite: true
 ---
 
-For extra copmort, I added some removeable grip pads I cut out of a broken pull-up bar.
+For extra comfort, I added some removable grip pads I cut out of a broken pull-up bar.
 
 ![Sport grips with additional grip pads](./sport_grips.jpg)

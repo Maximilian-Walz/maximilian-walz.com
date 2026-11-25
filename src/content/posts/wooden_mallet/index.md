@@ -9,6 +9,6 @@ favorite: true
 
 The mallet is made of two different types of wood. While the handle and the middle slice of the head are made of oak, I'm actually not sure what the type of the rest is, since it's from a piece of scrap wood I had lying around. It is however very hard wood and seems suited for a mallet.
 
-One of the siedes is slanted to have different angles of attack and the grip is made to feel comfy in both directions. The main eye-catcher is of course the engraving on the face side of the head. This project was a good opportunity to practive engraving in wood and I'm proud of the result. Below, you can see a close-up of it.
+One of the sides is slanted to have different angles of attack and the grip is made to feel comfy in both directions. The main eye-catcher is of course the engraving on the face side of the head. This project was a good opportunity to practice engraving in wood and I'm proud of the result. Below, you can see a close-up of it.
 
 ![Engraving on the mallet](./engraving.jpg)

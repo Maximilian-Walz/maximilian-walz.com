@@ -7,5 +7,5 @@ cover: ./hammer_pendant.jpg
 favorite: true
 ---
 
-The head was filed from a piece of steel I had left from the <a href="/blog/nail_pendant">Nail Pendant</a>. Again, I know that steel is not the best material for the job but it is what I had at hand.
+The head was filed from a piece of steel I had left from the [Nail Pendant](/projects/nail_pendant/). Again, I know that steel is not the best material for the job but it is what I had at hand.
 The hilt was made by twisting a piece of iron wire and sanding it down. I first tried to connect the head and the hilt by soldering them together but that didn't work, so I just glued them together with super glue. For now, that seems to do good enough.

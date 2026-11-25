@@ -6,7 +6,7 @@ summary: "I created a heart pendant out of two stones I found in a local quarry 
 cover: ./heart_pendant.jpg
 ---
 
-Every time a human beeing is near a body of water the same thing happens eventually: Stone skipping.
+Every time a human being is near a body of water the same thing happens eventually: Stone skipping.
 As I recently visited a local quarry lake with a few friends, it was no different.
 While we searched for the perfect stone to throw, a friend of mine found one shaped so perfectly round and flat that you could almost mistake it for a coin.
 His stone looked too nice to just throw it back into the water, so we came up with the idea to make jewelry out of it.

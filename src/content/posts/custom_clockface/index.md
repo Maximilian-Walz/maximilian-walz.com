@@ -10,11 +10,11 @@ cover: ./custom-clockface.jpg
 
 I like analog clocks. I know a lot of people who find them hard to read compared to their digital counterparts but to me they communicate time in a very distinct way.
 Growing up, a digital clock on every household appliance wasn't exactly the standard.
-So the analog clocks that were hanging in basically every room where the ones I learned to read first.
+So the analog clocks that were hanging in basically every room were the ones I learned to read first.
 And now, having gotten used to them over the years, I don't really have to parse the digits the clock hands are pointing to.
 I see the angle they're at and get a sense of time passed - just by giving it a quick glance.
 
-Despite that, my room hasn't had a analog clock for months now. So I decided to build one.
+Despite that, my room hasn't had an analog clock for months now. So I decided to build one.
 
 There are many cool designs out there, sometimes even redefining the ground concepts with stuff like moving the outer ring instead of a shaft in the center or pushing the limits of minimalism.
 While I really like these ideas, they often require to craft a custom clockwork which is a topic I don't want to tackle right now.
