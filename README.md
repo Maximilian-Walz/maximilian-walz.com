@@ -1,6 +1,6 @@
 # maximilian-walz.com
 
-The source of [maximilian-walz.com](https://maximilian-walz.com), where I show the things I make in my free time: woodworking, metalwork and jewelry, stone carving, analog photography and digital art.
+The source of [maximilian-walz.com](https://maximilian-walz.com), where I show the things I make in my free time.
 
 The site is built to be fast, small and easy to add to. It is fully static, ships almost no JavaScript, and makes no third-party requests: no analytics, no cookies, no external fonts.
 
@@ -8,11 +8,11 @@ The site is built to be fast, small and easy to add to. It is fully static, ship
 
 - **[Astro](https://astro.build)** generates plain HTML at build time. Everything is written in TypeScript.
 - **Posts** are Markdown files, one folder per project, with the photos right beside the text.
-- **Images** are resized and converted at build time, so there is no image server. Before a photo enters the repository it is downsized and stripped of all metadata, including GPS.
+- **Images** are resized and converted at build time. Before a photo enters the repository it is downsized and stripped of all metadata, including GPS.
 - **Styling** is [Tailwind CSS](https://tailwindcss.com). Page transitions are CSS only; the single script on the site is the image lightbox.
 - **Hosting** is ordinary static web space. GitHub Actions builds the site and uploads it.
 
-Most of the code was written with [Claude Code](https://claude.com/claude-code). The projects, photos and texts are my own.
+This is a refreshed version of my previous site, rebuilt with [Claude Code](https://claude.com/claude-code). The projects, photos and texts are my own.
 
 ## Run it locally
 
