@@ -9,7 +9,7 @@ export default defineConfig({
   trailingSlash: 'always',
   // HTML whitespace rules: a line break before an inline element stays a space (the 'jsx' default drops it).
   compressHTML: true,
-  integrations: [sitemap({ filter: (page) => !page.includes('/variants/') })],
+  integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
   image: { layout: 'constrained' },
   markdown: {

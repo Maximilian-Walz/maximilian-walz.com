@@ -12,4 +12,4 @@ Static personal portfolio (Astro 7, Tailwind 4, no client framework). Goals in o
 - Keep client JS minimal. The only script is the lightbox in `src/pages/projects/[slug].astro`. Page transitions are CSS-only (`@view-transition`); a `view-transition-name` must be unique per page.
 - Old URLs (`/blog/<slug>`) are redirected in `public/.htaccess` (Apache host).
 - Verify with `npm run check`. When taking headless Chromium screenshots, do not use `--virtual-time-budget`: images render blank with it.
-- `src/pages/variants/logo.astro` and `src/assets/logo-{g,g2}.svg` are logo proposals under review; remove once decided.
+- The logo is `src/assets/logo.svg`; the favicons in `public/favicons/` are generated from it, so regenerate them if it changes.
