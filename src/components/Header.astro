@@ -1,5 +1,5 @@
 ---
-import logo from '../assets/logo.svg?raw'
+import logoSvg from '../assets/logo.svg?raw'
 import { site } from '../lib/posts'
 
 interface Props {
@@ -10,6 +10,8 @@ const links = [
   { href: '/projects/', title: 'Projects' },
   { href: '/about/', title: 'About' },
 ]
+// Fixed dimensions on the SVG itself, so the logo can never render at full width, even before the stylesheet has loaded.
+const logo = logoSvg.replace('<svg ', '<svg width="48" height="31" ')
 const path = Astro.url.pathname
 const isCurrent = (href: string) => path.startsWith(href) || (href === '/projects/' && path.startsWith('/tags/'))
 ---
@@ -17,7 +19,7 @@ const isCurrent = (href: string) => path.startsWith(href) || (href === '/project
 <header class="sticky top-0 z-20 border-b border-gray-900 bg-gray-950/85 backdrop-blur-md" style="view-transition-name: site-header">
   <div class:list={['mx-auto flex items-center justify-between px-4 py-3 sm:px-6', wide ? 'max-w-6xl' : 'max-w-5xl']}>
     <a href="/" aria-label={`${site.title}, home`} class="flex items-center gap-3">
-      <span class="logo block w-12" set:html={logo} />
+      <span class="block" set:html={logo} />
       <span class="hidden text-xl font-semibold tracking-tight sm:block">{site.title}</span>
     </a>
     <nav class="flex items-center gap-6 font-medium">
@@ -35,11 +37,3 @@ const isCurrent = (href: string) => path.startsWith(href) || (href === '/project
     </nav>
   </div>
 </header>
-
-<style>
-  .logo :global(svg) {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-</style>
