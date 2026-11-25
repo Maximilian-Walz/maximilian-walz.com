@@ -11,18 +11,13 @@ interface Props {
 const { active, filter = false } = Astro.props
 const posts = await getPosts()
 const tags = getTags(posts)
-// The "All" tile shows a small mosaic of the four latest covers.
-const mosaic = posts.slice(0, 4)
 const dim = (current: boolean) => (!filter || current ? 'brightness-[.55] group-hover:brightness-75' : 'brightness-[.3] group-hover:brightness-50')
 ---
 
 <nav aria-label="Crafts" class:list={filter ? 'grid grid-cols-[repeat(auto-fill,minmax(6.5rem,1fr))] gap-3 text-sm' : 'flex flex-wrap gap-4'}>
   {
     filter && (
-      <a href="/projects/" aria-current={!active ? 'page' : undefined} class="tile group h-20 bg-gray-900">
-        <span class:list={['grid h-full grid-cols-2 grid-rows-2 transition duration-500 group-hover:scale-105', dim(!active)]}>
-          {mosaic.map((p) => <Image src={p.cover} alt="" width={120} height={80} fit="cover" class="h-full w-full object-cover" />)}
-        </span>
+      <a href="/projects/" aria-current={!active ? 'page' : undefined} class="tile group h-20 bg-gradient-to-br from-primary-700 via-primary-900 to-gray-900">
         <span class="label"><span class="font-bold">All</span><span class="count">{posts.length}</span></span>
       </a>
     )
