@@ -33,26 +33,13 @@ jobs:
       - run: npm ci
       - run: npm run images:check
       - run: npm run build
-      - uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist
-          include-hidden-files: true
-
-  deploy:
-    # Off until the repository variable DEPLOY_ENABLED is set to "true"
-    # and the secrets SSH_HOST, SSH_USER and SSH_KEY exist.
-    if: github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
-    needs: build
-    runs-on: ubuntu-latest
-    env:
-      TARGET: ${{ github.event_name == 'push' && 'production' || inputs.target }}
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - name: Upload with rsync
+      # Build and deploy share one job so no build artifact has to be stored.
+      - name: Deploy with rsync
+        # Off until the repository variable DEPLOY_ENABLED is set to "true"
+        # and the secrets SSH_HOST, SSH_USER and SSH_KEY exist.
+        if: github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
+        env:
+          TARGET: ${{ github.event_name == 'push' && 'production' || inputs.target }}
         run: |
           install -m 700 -d ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id && chmod 600 ~/.ssh/id
