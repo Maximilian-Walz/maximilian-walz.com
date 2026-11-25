@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro'
-import Card from '../../components/Card.astro'
+import PostGrid from '../../components/PostGrid.astro'
 import TagBar from '../../components/TagBar.astro'
 import { getPosts, getTags, tagSlug } from '../../lib/posts'
 
@@ -14,10 +14,9 @@ export async function getStaticPaths() {
 const { tag, posts } = Astro.props
 ---
 
-<Base title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
-  <h1 class="pt-2 text-3xl font-extrabold tracking-tight sm:text-4xl md:pt-5 md:text-6xl">{tag.name}</h1>
+<Base wide title={tag.name} description={`My ${tag.name.toLowerCase()} projects.`}>
+  <h1 class="pt-6 text-4xl font-extrabold tracking-tight md:text-5xl">{tag.name}</h1>
+  <p class="mt-2 text-lg text-gray-400">{tag.count} {tag.count === 1 ? 'project' : 'projects'}</p>
   <TagBar active={tag.slug} />
-  <div class="grid gap-x-10 gap-y-8 sm:grid-cols-2">
-    {posts.map((p, i) => <Card post={p} eager={i < 2} />)}
-  </div>
+  <PostGrid posts={posts} />
 </Base>

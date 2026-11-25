@@ -71,9 +71,16 @@ html {
   border-radius: 0.5rem;
   cursor: zoom-in;
 }
-.prose > figure.figure {
-  max-width: 44rem;
+/* Text sits in a readable column; single images are a bit wider, galleries use the full width. */
+.prose > * {
+  max-width: 42rem;
   margin-inline: auto;
+}
+.prose > figure.figure {
+  max-width: 50rem;
+}
+.prose > .gallery {
+  max-width: none;
 }
 .prose .gallery {
   display: grid;

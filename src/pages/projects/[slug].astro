@@ -43,18 +43,34 @@ const jsonLd = {
         style={`view-transition-name: cover-${post.id}`}
       />
     </div>
-    <header class="pt-6 text-center">
-      <div class="flex flex-wrap gap-2">{post.data.tags.map((t) => <Tag name={t} />)}</div>
-      <h1 class="pt-8 text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl">{post.data.title}</h1>
-      <time class="mt-2 block font-medium text-gray-400" datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+    <header class="mx-auto max-w-2xl pt-10">
+      <h1 class="text-4xl font-extrabold tracking-tight text-balance md:text-5xl">{post.data.title}</h1>
+      <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-gray-400">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        <span aria-hidden="true">·</span>
+        {post.data.tags.map((t) => <Tag name={t} />)}
+      </div>
     </header>
     <div class="prose prose-invert sm:prose-lg py-8">
       <Content />
     </div>
-    <footer class="flex flex-col gap-4 border-t border-gray-800 pt-6 font-medium sm:flex-row sm:justify-between">
-      {older ? <a class="text-primary-500 hover:text-primary-400" href={`/projects/${older.id}/`}>← {older.data.title}</a> : <span />}
-      {newer && <a class="text-primary-500 hover:text-primary-400 sm:text-right" href={`/projects/${newer.id}/`}>{newer.data.title} →</a>}
-    </footer>
+    <nav aria-label="More projects" class="mt-8 grid gap-4 sm:grid-cols-2">
+      {
+        [{ p: older, label: '← Older' }, { p: newer, label: 'Newer →' }].map(({ p, label }, i) =>
+          p ? (
+            <a href={`/projects/${p.id}/`} class:list={['group flex items-center gap-4 rounded-xl border border-gray-800 p-3 transition-colors hover:border-primary-600', i === 1 && 'sm:flex-row-reverse sm:text-right']}>
+              <Image src={p.cover} alt="" width={160} height={160} fit="cover" class="h-16 w-16 shrink-0 rounded-lg object-cover" />
+              <span>
+                <span class="block text-sm text-gray-400">{label}</span>
+                <span class="font-semibold group-hover:text-primary-400">{p.data.title}</span>
+              </span>
+            </a>
+          ) : (
+            <span class="hidden sm:block" />
+          ),
+        )
+      }
+    </nav>
   </article>
   <dialog class="lightbox" aria-label="Enlarged image"><img alt="" /></dialog>
 </Base>

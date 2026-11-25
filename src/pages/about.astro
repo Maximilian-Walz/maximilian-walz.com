@@ -1,30 +1,43 @@
 ---
 import { Image } from 'astro:assets'
 import Base from '../layouts/Base.astro'
+import Chip from '../components/Chip.astro'
 import avatar from '../assets/avatar.png'
-import { site } from '../lib/posts'
+import { getPosts, getTags, site } from '../lib/posts'
+const tags = getTags(await getPosts())
 ---
 
 <Base title="About">
-  <div class="items-start gap-10 pt-6 md:flex">
-    <div class="flex shrink-0 flex-col items-center md:w-56">
-      <Image src={avatar} alt="Portrait of Maximilian Walz" width={192} height={192} class="h-48 w-48 rounded-full" />
-      <h2 class="pt-4 text-2xl font-bold">{site.title}</h2>
-      <p class="text-gray-400">Software Engineer</p>
-      <p class="text-gray-400">arconsis</p>
+  <div class="mx-auto max-w-3xl pt-10">
+    <div class="flex items-center gap-5">
+      <Image src={avatar} alt="Portrait of Maximilian Walz" width={192} height={192} class="h-24 w-24 rounded-2xl" />
+      <div>
+        <h1 class="text-4xl font-extrabold tracking-tight md:text-5xl">Hi, <span class="text-primary-500">I'm Max!</span></h1>
+        <p class="mt-1 text-gray-400">Software Engineer at arconsis</p>
+      </div>
     </div>
-    <div class="prose prose-invert sm:prose-lg pt-8 md:pt-0">
-      <h1>Hi, I'm Max!</h1>
+
+    <div class="mt-8 space-y-5 text-lg leading-8 text-gray-200">
       <p>
-        Welcome to my site, where I share the stuff I create in my free time. My interests range from
-        <a href="/tags/woodworking/">woodworking</a>, <a href="/tags/metalworking/">metalwork</a> and
-        <a href="/tags/jewelry/">jewelry</a> to <a href="/tags/analog-photography/">analog photography</a> and
-        <a href="/tags/digital-art/">digital art</a>.
+        Welcome to my site, where I share the stuff I create in my free time. My interests range from woodworking,
+        metalwork and jewelry to analog photography and digital art.
       </p>
       <p>
         This site motivates me to make each project the best it can be, providing a platform to showcase my creative
         journey.
       </p>
+    </div>
+
+    <h2 class="mt-12 text-sm font-semibold tracking-widest text-gray-400 uppercase">What I make</h2>
+    <div class="mt-4 flex flex-wrap gap-2">
+      {tags.map((t) => <Chip href={`/tags/${t.slug}/`} count={t.count}>{t.name}</Chip>)}
+    </div>
+
+    <h2 class="mt-12 text-sm font-semibold tracking-widest text-gray-400 uppercase">Get in touch</h2>
+    <div class="mt-4 flex flex-wrap gap-2">
+      <Chip href={`mailto:${site.email}`}>{site.email}</Chip>
+      <Chip href={site.github}>GitHub</Chip>
+      <Chip href={site.reddit}>Reddit</Chip>
     </div>
   </div>
 </Base>

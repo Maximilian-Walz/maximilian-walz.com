@@ -1,0 +1,12 @@
+---
+import Card from './Card.astro'
+import type { Post } from '../lib/posts'
+interface Props {
+  posts: Post[]
+}
+const { posts } = Astro.props
+---
+
+<div class="grid auto-rows-[17rem] grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  {posts.map((p, i) => <Card post={p} overlay eager={i < 3} sizes="(min-width: 64rem) 23rem, (min-width: 40rem) 50vw, 100vw" />)}
+</div>

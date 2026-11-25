@@ -26,7 +26,7 @@ export default defineHastPlugin({
     visit(node, ctx) {
       const content = node.children.filter((c) => !isBlank(c))
       if (!content.length || !content.every(isImg)) return
-      if (content.length === 1) return ctx.replaceNode(node, figure(content[0], '(min-width: 48rem) 44rem, 100vw'))
+      if (content.length === 1) return ctx.replaceNode(node, figure(content[0], '(min-width: 52rem) 50rem, 100vw'))
       ctx.replaceNode(node, {
         type: 'element',
         tagName: 'div',

@@ -9,18 +9,18 @@ const links = [
 const path = Astro.url.pathname
 ---
 
-<header class="flex items-center justify-between py-3 md:py-5">
+<header class="sticky top-0 z-20 -mx-4 flex items-center justify-between bg-gray-950/85 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:px-6 md:py-4">
   <a href="/" aria-label={`${site.title}, home`} class="flex items-center gap-3">
-    <span class="logo block w-14" set:html={logo} />
-    <span class="hidden text-2xl font-semibold sm:block">{site.title}</span>
+    <span class="logo block w-12" set:html={logo} />
+    <span class="hidden text-xl font-semibold tracking-tight sm:block">{site.title}</span>
   </a>
-  <nav class="flex items-center gap-5 leading-5 sm:gap-6">
+  <nav class="flex items-center gap-1">
     {
       links.map((l) => (
         <a
           href={l.href}
           aria-current={path.startsWith(l.href) ? 'page' : undefined}
-          class="font-medium text-gray-100 underline-offset-4 hover:text-primary-400 aria-[current=page]:underline"
+          class="rounded-full px-3 py-1.5 text-sm font-medium text-gray-200 hover:text-primary-400 aria-[current=page]:bg-gray-800 aria-[current=page]:text-white"
         >
           {l.title}
         </a>

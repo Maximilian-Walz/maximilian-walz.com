@@ -1,5 +1,5 @@
 ---
-import Tag from './Tag.astro'
+import Chip from './Chip.astro'
 import { getPosts, getTags } from '../lib/posts'
 interface Props {
   active?: string
@@ -9,7 +9,7 @@ const posts = await getPosts()
 const tags = getTags(posts)
 ---
 
-<nav aria-label="Filter by craft" class="mt-4 mb-8 flex flex-wrap gap-2">
-  <Tag name="All" href="/projects/" count={posts.length} active={!active} />
-  {tags.map((t) => <Tag name={t.name} count={t.count} active={t.slug === active} />)}
+<nav aria-label="Filter by craft" class="mt-6 mb-8 flex flex-wrap gap-2">
+  <Chip href="/projects/" count={posts.length} active={!active}>All</Chip>
+  {tags.map((t) => <Chip href={`/tags/${t.slug}/`} count={t.count} active={t.slug === active}>{t.name}</Chip>)}
 </nav>
