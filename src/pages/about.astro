@@ -6,7 +6,7 @@ import avatar from '../assets/avatar.png'
 import { site } from '../lib/posts'
 
 const contacts = [
-  { name: 'mail', label: site.email, href: `mailto:${site.email}` },
+  { name: 'mail', label: 'Mail', href: `mailto:${site.email}` },
   { name: 'github', label: 'GitHub', href: site.github },
   { name: 'reddit', label: 'Reddit', href: site.reddit },
 ] as const
@@ -40,8 +40,7 @@ const contacts = [
         contacts.map((c) => (
           <li>
             <a href={c.href} class="flex items-center gap-2.5 text-gray-200 transition-colors hover:text-primary-400">
-              {/* The email address is all lowercase, so its visual middle sits lower than a capitalised label's: nudge the envelope down to match. */}
-              <Icon name={c.name} class:list={['h-5 w-5', c.name === 'mail' && 'translate-y-px']} />
+              <Icon name={c.name} class="h-5 w-5" />
               {c.label}
             </a>
           </li>
