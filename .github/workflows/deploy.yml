@@ -35,9 +35,9 @@ jobs:
       - run: npm run build
       # Build and deploy share one job so no build artifact has to be stored.
       - name: Deploy with rsync
-        # Off until the repository variable DEPLOY_ENABLED is set to "true"
-        # and the secrets SSH_HOST, SSH_USER and SSH_KEY exist.
-        if: github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
+        # A manual run always deploys to the chosen target (needs the secrets SSH_HOST, SSH_USER, SSH_KEY).
+        # Pushes to main deploy to production only once the repository variable DEPLOY_ENABLED is "true".
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true')
         env:
           TARGET: ${{ github.event_name == 'push' && 'production' || inputs.target }}
         run: |
