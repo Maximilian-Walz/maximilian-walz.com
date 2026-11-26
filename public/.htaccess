@@ -1,6 +1,6 @@
 ErrorDocument 404 /404.html
 
-# /about redirects to /about/. Stated explicitly because a config file higher up on the server turns it off.
+# /about redirects to /about/. Stated explicitly so it does not depend on server defaults.
 DirectorySlash On
 
 RewriteEngine On
