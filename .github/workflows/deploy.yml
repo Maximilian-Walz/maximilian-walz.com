@@ -34,14 +34,31 @@ jobs:
       - run: npm run images:check
       - run: npm run build
       # Build and deploy share one job so no build artifact has to be stored.
-      - name: Deploy with rsync
+      - name: Deploy
         # A manual run always deploys to the chosen target (needs the secrets SSH_HOST, SSH_USER, SSH_KEY).
         # Pushes to main deploy to production only once the repository variable DEPLOY_ENABLED is "true".
         if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && vars.DEPLOY_ENABLED == 'true')
         env:
           TARGET: ${{ github.event_name == 'push' && 'production' || inputs.target }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
         run: |
+          case "$TARGET" in test|production) ;; *) echo "Unknown target: $TARGET"; exit 1 ;; esac
           install -m 700 -d ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id && chmod 600 ~/.ssh/id
-          ssh-keyscan -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
-          rsync -az --delete -e "ssh -i ~/.ssh/id" dist/ "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:httpdocs/$TARGET/"
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id && chmod 600 ~/.ssh/id
+          ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+          # The host has no rsync, so the site is sent as one archive, unpacked next to the live folder
+          # and swapped in by renaming: visitors never see a half-uploaded site.
+          tar -C dist -cz . | ssh -i ~/.ssh/id "$SSH_USER@$SSH_HOST" "
+            set -e
+            cd httpdocs
+            rm -rf .new-$TARGET .old-$TARGET
+            mkdir .new-$TARGET
+            tar -xz -C .new-$TARGET
+            # Keep the certificate-renewal folder the hosting panel maintains
+            if [ -d $TARGET/.well-known ]; then cp -a $TARGET/.well-known .new-$TARGET/; fi
+            if [ -d $TARGET ]; then mv $TARGET .old-$TARGET; fi
+            mv .new-$TARGET $TARGET
+            rm -rf .old-$TARGET
+          "

@@ -11,6 +11,7 @@ Static personal portfolio (Astro 7, Tailwind 4, no client framework). Goals in o
 - Design: picture-first, no pill-shaped chips or badges (the owner dislikes them); links and tags are plain text.
 - Everything is TypeScript, including config and scripts (Node runs `.ts` directly). `npm run check` type-checks.
 - Keep client JS minimal. The only script is the lightbox in `src/pages/projects/[slug].astro`. Page transitions are CSS-only (`@view-transition`); a `view-transition-name` must be unique per page.
+- Hosting is netcup web space (Apache, chrooted SSH, no rsync). Deploy sends a tar archive over SSH and swaps folders; targets are `httpdocs/test` and `httpdocs/production`. A legacy `httpdocs/.htaccess` above both sets `DirectorySlash Off`, which ours overrides.
 - Old URLs (`/blog/<slug>`) are redirected in `public/.htaccess` (Apache host).
 - Verify with `npm run check`. When taking headless Chromium screenshots, do not use `--virtual-time-budget`: images render blank with it.
 - The logo is `src/assets/logo.svg`; the favicons in `public/favicons/` are generated from it, so regenerate them if it changes.

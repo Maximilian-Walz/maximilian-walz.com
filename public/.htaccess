@@ -1,5 +1,8 @@
 ErrorDocument 404 /404.html
 
+# /about redirects to /about/. Stated explicitly because a config file higher up on the server turns it off.
+DirectorySlash On
+
 RewriteEngine On
 # The hosting package's own netcup.net address should not serve a copy of the site
 RewriteCond %{HTTP_HOST} \.netcup\.net$ [NC]
@@ -9,13 +12,6 @@ RewriteRule ^blog/?$ /projects/ [R=301,L]
 RewriteRule ^blog/page/.*$ /projects/ [R=301,L]
 RewriteRule ^blog/([^/]+)/?$ /projects/$1/ [R=301,L]
 RewriteRule ^tags/?$ /projects/ [R=301,L]
-
-# Fingerprinted assets never change
-<IfModule mod_headers.c>
-  <FilesMatch "^_astro/|\.(woff2|webp|avif)$">
-    Header set Cache-Control "public, max-age=31536000, immutable"
-  </FilesMatch>
-</IfModule>
 
 # Keep the test copy (test.maximilian-walz.com) out of search engines
 SetEnvIfNoCase Host ^test\. NOINDEX
